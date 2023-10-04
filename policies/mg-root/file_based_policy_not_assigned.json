@@ -1,0 +1,68 @@
+{
+    "properties": {
+      "displayName": "mandatory-tags",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "Ensure mandatory resource group tags exist",
+      "metadata": {
+      },
+      "parameters": {
+        "effect": {
+          "type": "String",
+          "metadata": {
+            "description": "deny / audit / append / auditifnotexists / deployifnotexists / disabled / enforceregopolicy",
+            "displayName": "Policy effect"
+          },
+          "defaultValue": "audit"
+        }
+      },
+      "policyRule": {
+        "if": {
+          "allof": [
+            {
+              "equals": "Microsoft.Resources/subscriptions/resourceGroups",
+              "field": "type"
+            },
+            {
+              "anyOf": [
+                {
+                  "field": "tags",
+                  "notContainsKey": "application"
+                },
+                {
+                  "field": "tags",
+                  "notContainsKey": "appmanagedby"
+                },
+                {
+                  "field": "tags",
+                  "notContainsKey": "costcenter"
+                },
+                {
+                  "field": "tags",
+                  "notContainsKey": "division"
+                },
+                {
+                  "field": "tags",
+                  "notContainsKey": "environment"
+                },
+                {
+                  "field": "tags",
+                  "notContainsKey": "inframanagedby"
+                },
+                {
+                  "field": "tags",
+                  "notContainsKey": "project"
+                }
+              ]
+            }
+          ]
+        },
+        "then": {
+          "effect": "[parameters('effect')]"
+        }
+      }
+    },
+    "type": "Microsoft.Authorization/policyDefinitions",
+    "name": "mandatory-tags"
+    
+  }
