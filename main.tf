@@ -34,8 +34,8 @@ locals {
     try(policy_information.policy_definition_id, false) == false }
   if length(policydata) > 0 }
 
-  // BuiltIn policy definition
-  builtin_mgmt_grp_policies_temp = {
+  // existing policy definition
+  existing_mgmt_grp_policies_temp = {
     for mgmt_grp, policydata in local.unfiltered_mgmt_grp_policies : mgmt_grp => {
       for policy_name, policy_information in policydata :
       policy_name => policy_information
@@ -52,11 +52,11 @@ locals {
     } if length(policydata) > 0
   ]...)
 
-  // BuiltIn policy definition
-  builtin_mgmt_grp_policies = merge([
-    for mgmt_grp, policydata in local.builtin_mgmt_grp_policies_temp :
+  // existing policy definition
+  existing_mgmt_grp_policies = merge([
+    for mgmt_grp, policydata in local.existing_mgmt_grp_policies_temp :
     { for policy_information in policydata :
-      "${mgmt_grp}/${policy_information.policy_filename}" => policy_information
+      "${mgmt_grp}/${try(policy_information.policy_name, policy_information.assignment_name)}" => policy_information
     } if length(policydata) > 0
   ]...)
 
@@ -65,8 +65,8 @@ locals {
 output "filebased_mgmt_grp_policies" {
   value = local.verbose ? local.filebased_mgmt_grp_policies : null
 }
-output "builtin_mgmt_grp_policies" {
-  value = local.verbose ? local.builtin_mgmt_grp_policies : null
+output "existing_mgmt_grp_policies" {
+  value = local.verbose ? local.existing_mgmt_grp_policies : null
 }
 
 // Deploy policiy defintions
@@ -97,16 +97,18 @@ resource "azurerm_management_group_policy_assignment" "filebased" {
       if try(policy_data.assign_to_mgmt_grp, true) == true
   } : {}
   name                 = try(each.value.assignment_name, jsondecode(file("${path.module}/${each.key}"))["name"])
+  display_name         = try(each.value.assignment_display_name, each.value.assignment_name, jsondecode(file("${path.module}/${each.key}"))["name"])
   policy_definition_id = azurerm_policy_definition.filebased[each.key].id
   management_group_id  = "/providers/Microsoft.Management/managementGroups/${split("/", each.key)[length(split("/", each.key)) - 2]}"
-  parameters           = try(each.value.parameters, jsonencode(jsondecode(file("${path.module}/${each.key}"))["properties"]["parameters"]))
+  parameters           = try(jsonencode(each.value.parameters), jsonencode(jsondecode(file("${path.module}/${each.key}"))["properties"]["parameters"]))
   depends_on           = [azurerm_policy_definition.filebased]
 }
 
-resource "azurerm_management_group_policy_assignment" "builtin" {
-  for_each             = var.deploy_policies ? local.builtin_mgmt_grp_policies : {}
+resource "azurerm_management_group_policy_assignment" "existing" {
+  for_each             = var.deploy_policies ? local.existing_mgmt_grp_policies : {}
   name                 = try(each.value.assignment_name, jsondecode(file("${path.module}/${each.key}"))["name"])
+  display_name         = try(each.value.assignment_display_name, each.value.assignment_name, jsondecode(file("${path.module}/${each.key}"))["name"])
   policy_definition_id = each.value.policy_definition_id
-  parameters           = jsonencode(jsondecode(file("${path.module}/policies/${each.key}/${each.value.policy_filename}"))["properties"]["parameters"])
+  parameters           = try(jsonencode(each.value.parameters), jsonencode(jsondecode(file("${path.module}/policies/${each.key}/${each.value.policy_filename}"))["properties"]["parameters"]))
   management_group_id  = "/providers/Microsoft.Management/managementGroups/${split("/", each.key)[length(split("/", each.key)) - 2]}"
 }

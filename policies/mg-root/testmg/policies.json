@@ -9,13 +9,18 @@
      "definition_description" : "Ensure mandatory resource group tags exist",
      "assignment_name" : "mandatorytagsres",
      "assign_to_mgmt_grp" : true
-   },
-   {
+  },
+  {
     "policy_filename" :  "file_based_policy_not_assigned.json",
     "definition_name" : "mandatory-tags",
     "definition_display_name" : "Mandatory Tags",
     "definition_description" : "Ensure mandatory resource group tags exist",
     "assignment_name" : "mandatorytagsres",
     "assign_to_mgmt_grp" : false
+  },
+  {
+    "assignment_name" : "allowed_locations",
+    "policy_definition_id" : "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
+    "parameters" : { "AllowedLocations" : {"value" : ["westus", "westeurope"]}}
   }
 ]
