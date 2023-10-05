@@ -56,7 +56,7 @@ locals {
   existing_mgmt_grp_policies = merge([
     for mgmt_grp, policydata in local.existing_mgmt_grp_policies_temp :
     { for policy_information in policydata :
-      "${mgmt_grp}/${try(policy_information.policy_name, policy_information.assignment_name)}" => policy_information
+      "${mgmt_grp}/${try(policy_information.policy_filename, policy_information.policy_name, policy_information.assignment_name)}" => policy_information
     } if length(policydata) > 0
   ]...)
 
@@ -99,16 +99,17 @@ resource "azurerm_management_group_policy_assignment" "filebased" {
   name                 = try(each.value.assignment_name, jsondecode(file("${path.module}/${each.key}"))["name"])
   display_name         = try(each.value.assignment_display_name, each.value.assignment_name, jsondecode(file("${path.module}/${each.key}"))["name"])
   policy_definition_id = azurerm_policy_definition.filebased[each.key].id
-  management_group_id  = "/providers/Microsoft.Management/managementGroups/${split("/", each.key)[length(split("/", each.key)) - 2]}"
+  management_group_id  = "/providers/Microsoft.Management/managementGroups/${split("/", each.key)[length(split("/", each.key)) - 1]}"
   parameters           = try(jsonencode(each.value.parameters), jsonencode(jsondecode(file("${path.module}/${each.key}"))["properties"]["parameters"]))
   depends_on           = [azurerm_policy_definition.filebased]
 }
 
 resource "azurerm_management_group_policy_assignment" "existing" {
-  for_each             = var.deploy_policies ? local.existing_mgmt_grp_policies : {}
+  for_each             = var.deploy_policies ? local.existing_mgmt_grp_policies : null
   name                 = try(each.value.assignment_name, jsondecode(file("${path.module}/${each.key}"))["name"])
-  display_name         = try(each.value.assignment_display_name, each.value.assignment_name, jsondecode(file("${path.module}/${each.key}"))["name"])
+  display_name         = try(each.value.assignment_display_name, jsondecode(file("${path.module}/${each.key}"))["properties"]["displayName"], jsondecode(file("${path.module}/${each.key}"))["name"], each.value.assignment_name)
+  //display_name = try(each.value.assignment_display_name, jsondecode(file("${path.module}/${each.key}"))["properties"]["displayName"])
   policy_definition_id = each.value.policy_definition_id
   parameters           = try(jsonencode(each.value.parameters), jsonencode(jsondecode(file("${path.module}/policies/${each.key}/${each.value.policy_filename}"))["properties"]["parameters"]))
-  management_group_id  = "/providers/Microsoft.Management/managementGroups/${split("/", each.key)[length(split("/", each.key)) - 2]}"
+  management_group_id  = "/providers/Microsoft.Management/managementGroups/${split("/", each.key)[length(split("/", each.key)) - 1]}"
 }

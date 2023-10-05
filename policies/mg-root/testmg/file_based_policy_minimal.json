@@ -1,6 +1,6 @@
 {
     "properties": {
-      "displayName": "mandatory-tags",
+      "displayName": "mandatory-tags11111",
       "policyType": "Custom",
       "mode": "All",
       "description": "Ensure mandatory resource group tags exist",
@@ -63,6 +63,6 @@
       }
     },
     "type": "Microsoft.Authorization/policyDefinitions",
-    "name": "mandatory-tags"
+    "name": "mandatory-tags1234"
     
   }
