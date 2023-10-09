@@ -87,9 +87,8 @@ data "azurerm_management_group" "existing_mangement_group" {
 }
 
 // Deploy policiy defintions
-// only if variable deploy_custom_policies is set to true
 resource "azurerm_policy_definition" "filebased" {
-  for_each            = var.deploy_policies ? local.filebased_mgmt_grp_policies : null
+  for_each            = local.filebased_mgmt_grp_policies
   name                = try(each.value.definition_name, jsondecode(file("${path.module}/${each.key}"))["name"])
   display_name        = try(each.value.definition_display_name, jsondecode(file("${path.module}/${each.key}"))["properties"]["displayName"])
   description         = try(each.value.definition_description, jsondecode(file("${path.module}/${each.key}"))["properties"]["description"])
@@ -101,12 +100,11 @@ resource "azurerm_policy_definition" "filebased" {
 }
 
 // Assign policy definitions
-// only if variable deploy_custom_policies is set to true
 resource "azurerm_management_group_policy_assignment" "filebased" {
-  for_each = var.deploy_policies ? {
+  for_each = {
     for policy_name, policy_data in local.filebased_mgmt_grp_policies : policy_name => policy_data
     if try(policy_data.assign_to_mgmt_grp, true) == true
-  } : null
+  }
   name                 = try(each.value.assignment_name, jsondecode(file("${path.module}/${each.key}"))["name"])
   display_name         = try(each.value.assignment_display_name, each.value.assignment_name, jsondecode(file("${path.module}/${each.key}"))["name"])
   policy_definition_id = azurerm_policy_definition.filebased[each.key].id
@@ -116,7 +114,7 @@ resource "azurerm_management_group_policy_assignment" "filebased" {
 }
 
 resource "azurerm_management_group_policy_assignment" "existing" {
-  for_each             = var.deploy_policies ? local.existing_mgmt_grp_policies : null
+  for_each             = local.existing_mgmt_grp_policies
   name                 = try(each.value.assignment_name, jsondecode(file("${path.module}/${each.key}"))["name"])
   display_name         = try(each.value.assignment_display_name, jsondecode(file("${path.module}/${each.key}"))["properties"]["displayName"], jsondecode(file("${path.module}/${each.key}"))["name"], each.value.assignment_name)
   policy_definition_id = each.value.policy_definition_id
