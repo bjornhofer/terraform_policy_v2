@@ -1,0 +1,12 @@
+{
+    "properties": {
+      "displayName": "Allowed Location - existing minimal",
+      "parameters": {
+        "listOfAllowedLocations" : {
+            "value" : 
+            ["westus", "westeurope"]
+        }
+      }
+    },
+    "name": "existing_minimal"
+  }

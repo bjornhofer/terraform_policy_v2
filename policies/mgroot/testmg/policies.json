@@ -1,0 +1,35 @@
+[
+  {
+    "policy_filename" :  "file_based_minimal.json",
+    "parameters" : { "listOfAllowedLocations" : {"value" : ["westeurope", "northeurope"]}}
+  },
+  {
+    "policy_filename" :  "file_based_normal.json",
+    "definition_name" : "allowed_location_normal",
+    "definition_description" : "Allowed Location - normal",
+    "definition_display_name" : "Allowed Location - normal",
+    "parameters" : { "listOfAllowedLocations" : {"value" : ["westeurope", "northeurope"]}}
+  },
+  {
+    "policy_filename" :  "file_based_notassigned.json",
+    "definition_name" : "allowed_location_notassigned",
+    "definition_description" : "Allowed Location - not assogned",
+    "definition_display_name" : "Allowed Location - not assigned",
+    "assign_to_mgmt_grp" : false
+  },
+  {
+    "policy_filename" : "existing_policy_minimal.json",
+    "policy_definition_id" : "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
+  },
+  {
+    "assignment_name" : "existing",
+    "policy_definition_id" : "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
+    "parameters" : { "listOfAllowedLocations" : {"value" : ["westeurope", "northeurope"]}}
+  },
+  {
+  "assignment_name" : "existing_detail",
+  "assignment_display_name" : "Allowed Location - existing detail",
+  "policy_definition_id" : "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
+  "parameters" : { "listOfAllowedLocations" : {"value" : ["westeurope", "northeurope"]}}
+  }
+]
