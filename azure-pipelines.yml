@@ -1,19 +1,62 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
 pool:
   name: pool02
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+stages:
+  - stage: Terraform
+    jobs:
+    - job: Deploy
+      displayName: "Deploy"
+      timeoutInMinutes: 120
+      steps:
+        - task: Bash@3
+          name: terraform_install
+          displayName: "Install Terraform"
+          inputs:
+            targetType: 'inline'
+            script: |
+              # Setup Terraform
+              sudo apt-get update
+              sudo apt-get install -y gnupg software-properties-common
+              wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+              echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+              sudo apt update
+              sudo apt install terraform
+        - task: Bash@3
+          name: terraform_init
+          displayName: "Terraform Init"
+          env:
+            ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+            ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+            ARM_TENANT_ID: $(ARM_TENANT_ID)
+            ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION)
+          inputs:
+            targetType: 'inline'
+            script: |
+              terraform init
+        - task: Bash@3
+          name: terraform_plan
+          displayName: "Terraform Plan"
+          env:
+            ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+            ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+            ARM_TENANT_ID: $(ARM_TENANT_ID)
+            ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION)
+          inputs:
+            targetType: 'inline'
+            script: |
+              terraform plan
+#        - task: Bash@3
+#          name: terraform_apply
+#          displayName: "Terraform Apply"
+#          env:
+#            ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+#            ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+#            ARM_TENANT_ID: $(ARM_TENANT_ID)
+#            ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION)
+#          inputs:
+#            targetType: 'inline'
+#            script: |
+#              terraform apply -auto-approve
