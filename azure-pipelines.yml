@@ -63,7 +63,7 @@ stages:
         
         - task: Bash@3
           name: terraform_destroy
-          displayName: "Terraform Apply"
+          displayName: "Terraform Destroy"
           env:
             ARM_CLIENT_ID: $(ARM_CLIENT_ID)
             ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
