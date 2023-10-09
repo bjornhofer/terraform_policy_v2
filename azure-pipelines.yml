@@ -48,15 +48,28 @@ stages:
             targetType: 'inline'
             script: |
               terraform plan
-#        - task: Bash@3
-#          name: terraform_apply
-#          displayName: "Terraform Apply"
-#          env:
-#            ARM_CLIENT_ID: $(ARM_CLIENT_ID)
-#            ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
-#            ARM_TENANT_ID: $(ARM_TENANT_ID)
-#            ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION)
-#          inputs:
-#            targetType: 'inline'
-#            script: |
-#              terraform apply -auto-approve
+        - task: Bash@3
+          name: terraform_apply
+          displayName: "Terraform Apply"
+          env:
+            ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+            ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+            ARM_TENANT_ID: $(ARM_TENANT_ID)
+            ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION)
+          inputs:
+            targetType: 'inline'
+            script: |
+              terraform apply -auto-approve
+        
+        - task: Bash@3
+          name: terraform_destroy
+          displayName: "Terraform Apply"
+          env:
+            ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+            ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+            ARM_TENANT_ID: $(ARM_TENANT_ID)
+            ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION)
+          inputs:
+            targetType: 'inline'
+            script: |
+              terraform destroy -auto-approve
