@@ -110,7 +110,7 @@ resource "azurerm_management_group_policy_assignment" "filebased" {
   policy_definition_id = azurerm_policy_definition.filebased[each.key].id
   management_group_id  = data.azurerm_management_group.filebased_mangement_group[each.key].id
   parameters           = try(jsonencode(each.value.parameters), jsonencode(jsondecode(file("${path.module}/${each.key}"))["properties"]["parameters"]))
-  enforce              = try(each.value.enforcement_mode, true)
+  enforce              = try(each.value.enforce, true)
   depends_on           = [azurerm_policy_definition.filebased]
 }
 
@@ -120,6 +120,6 @@ resource "azurerm_management_group_policy_assignment" "existing" {
   display_name         = try(each.value.assignment_display_name, jsondecode(file("${path.module}/${each.key}"))["properties"]["displayName"], jsondecode(file("${path.module}/${each.key}"))["name"], each.value.assignment_name)
   policy_definition_id = each.value.policy_definition_id
   parameters           = try(jsonencode(each.value.parameters), jsonencode(jsondecode(file("${path.module}/${each.key}"))["properties"]["parameters"]))
-  enforce              = try(each.value.enforcement_mode, true)
+  enforce              = try(each.value.enforce, true)
   management_group_id  = data.azurerm_management_group.existing_mangement_group[each.key].id
 }
