@@ -27,10 +27,8 @@ This main configuration file will provide following informations to about the po
 ### Workflow
 Terraform looks for a file called policies.json - every policy mentioned there will be (at least) definied at that management group layer.
 Possible actions/configurations:
-#### Define/Apply (existing) policy
-A policy gets defined and assigned at the same management group layer.
-#### Define (existing) policy
-A policy get only defined at the management group layer.
+- Define/Apply (existing) policy -A policy gets defined and assigned at the same management group layer.
+- Define (existing) policy - A policy get only defined at the management group layer.
 
 ## Custom policy (e.g.: mypolicydefinitionxyz.json)
 Filename can be choosen by creator (please refer to operating sytstem constraints).
@@ -38,15 +36,15 @@ This file contains the definition of the custom policy.
 
 ### Parameters
 Following parameters can be used for policy definition
-- name - if not provided by policies.json Terraform will take value provided in the definition file
-- display_name (stored in properties) - if not provided by policies.json Terraform will take value provided in the definition file
-- description (stored in properties) - if not provided by policies.json Terraform will take value provided in the definition file
-- policy_type (stored in properties) - must be provided, otherwise "Custom" will be used
-- mode (stored in properties) - must be provided, otherwise "All" will be used
-- parameters - must be provided
-- policy_rule - must be provided
+- *name* - if not provided by policies.json Terraform will take value provided in the definition file
+- *display_name* (stored in properties) - if not provided by policies.json Terraform will take value provided in the definition file
+- *description* (stored in properties) - if not provided by policies.json Terraform will take value provided in the definition file
+- *policy_type* (stored in properties) - must be provided, otherwise "Custom" will be used
+- *mode* (stored in properties) - must be provided, otherwise "All" will be used
+- *parameters* - must be provided
+- *policy_rule* - must be provided
 
 Following paramenters can be used for policy assignment
-- assignment_name - if not provided by policies.json Terraform will take the name provided in the definition file
-- display_name (stored in properties) - if not provided by policies.json Terraform will look at assignment_name, if not provided Terraform will take value provided in the definition file
-- parameters - if not provided by policies.json Terraform will take the properties of the file definition
+- *assignment_name* - if not provided by policies.json Terraform will take the name provided in the definition file
+- *display_name* (stored in properties) - if not provided by policies.json Terraform will look at assignment_name, if not provided Terraform will take value provided in the definition file
+- *parameters* - if not provided by policies.json Terraform will take the properties of the file definition
