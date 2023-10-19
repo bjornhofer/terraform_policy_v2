@@ -48,4 +48,3 @@ Following paramenters can be used for policy assignment
 - *assignment_name* - if not provided by policies.json Terraform will take the name provided in the definition file
 - *display_name* (stored in properties) - if not provided by policies.json Terraform will look at assignment_name, if not provided Terraform will take value provided in the definition file
 - *parameters* - if not provided by policies.json Terraform will take the properties of the file definition
-
