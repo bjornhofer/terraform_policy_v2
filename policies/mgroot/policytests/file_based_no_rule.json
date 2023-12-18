@@ -8,8 +8,8 @@
             "category":"Cost Optimization",
             "source":"https://github.com/Azure/Enterprise-Scale/",
             "alzCloudEnvironments":["AzureCloud","AzureChinaCloud","AzureUSGovernment"]},
-        "parameters":
-            {"effectDisks":
+        "parameters": {
+            "effectDisks":
                 {"type":"String","metadata":
                     {"displayName":"Disks Effect",
                     "description":"Enable or disable the execution of the policy for Microsoft.Compute/disks"},
@@ -26,8 +26,9 @@
                     "displayName":"ServerFarms Effect",
                     "description":"Enable or disable the execution of the policy for Microsoft.Web/serverfarms"},
                 "allowedValues":["Audit","Disabled"],
-                "defaultValue":"Audit"}},
-            "policyDefinitions":[
+                "defaultValue":"Audit"}
+            },
+        "policyDefinitions":[
                 {"policyDefinitionReferenceId":"AuditDisksUnusedResourcesCostOptimization",
                 "policyDefinitionId":"/providers/Microsoft.Management/managementGroups/contoso/providers/Microsoft.Authorization/policyDefinitions/Audit-Disks-UnusedResourcesCostOptimization",
                 "parameters":{"effect":{"value":"[parameters('effectDisks')]"}},
@@ -45,8 +46,9 @@
                 "policyDefinitionId":"/providers/Microsoft.Management/managementGroups/contoso/providers/Microsoft.Authorization/policyDefinitions/Audit-AzureHybridBenefit",
                 "parameters":{
                     "effect":{"value":"Audit"}},
-                "groupNames":[]}],
-            "policyDefinitionGroups":null
-        },
+                "groupNames":[]}
+            ],
+        "policyDefinitionGroups":null
+    },
     "name": "Audit-UnusedResourcesCostOptimization"
 }
