@@ -27,10 +27,13 @@
     "parameters" : { "listOfAllowedLocations" : {"value" : ["westeurope", "northeurope"]}}
   },
   {
-  "assignment_name" : "existing_detail",
-  "assignment_display_name" : "Allowed Location - existing detail",
-  "policy_definition_id" : "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
-  "parameters" : { "listOfAllowedLocations" : {"value" : ["westeurope", "northeurope"]}},
-  "enforce" : false
+    "assignment_name" : "existing_detail",
+    "assignment_display_name" : "Allowed Location - existing detail",
+    "policy_definition_id" : "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
+    "parameters" : { "listOfAllowedLocations" : {"value" : ["westeurope", "northeurope"]}},
+    "enforce" : false
+  },
+  {
+    "policy_filename" : "file_base_no_rule.json"
   }
 ]
