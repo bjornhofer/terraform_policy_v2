@@ -34,6 +34,6 @@
     "enforce" : false
   },
   {
-    "policy_filename" : "file_base_no_rule.json"
+    "policy_filename" : "file_based_no_rule.json"
   }
 ]
