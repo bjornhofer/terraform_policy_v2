@@ -94,8 +94,8 @@ resource "azurerm_policy_definition" "filebased" {
   description         = try(each.value.definition_description, jsondecode(file("${path.module}/${each.key}"))["properties"]["description"])
   policy_type         = try(jsondecode(file("${path.module}/${each.key}"))["properties"]["policyType"], "Custom")
   mode                = try(jsondecode(file("${path.module}/${each.key}"))["properties"]["mode"], "All")
-  parameters          = jsonencode(jsondecode(file("${path.module}/${each.key}"))["properties"]["parameters"])
-  policy_rule         = jsonencode(jsondecode(file("${path.module}/${each.key}"))["properties"]["policyRule"])
+  parameters          = try(jsonencode(jsondecode(file("${path.module}/${each.key}"))["properties"]["parameters"]), {})
+  policy_rule         = try(jsonencode(jsondecode(file("${path.module}/${each.key}"))["properties"]["policyRule"]), {})
   management_group_id = data.azurerm_management_group.filebased_mangement_group[each.key].id
 }
 
