@@ -89,16 +89,15 @@ data "azurerm_management_group" "existing_mangement_group" {
 // Deploy policiy defintions
 // Policies with policy_rule defined
 resource "azurerm_policy_definition" "filebased" {
-  for_each            = { 
-    for policy_name, policy_data in local.filebased_mgmt_grp_policies : policy_name => policy_data 
-    if try(jsondecode(file("${path.module}/${policy_name}"))["properties"]["policyRule"], false) != false 
+  for_each = {
+    for policy_name, policy_data in local.filebased_mgmt_grp_policies : policy_name => policy_data
+    if try(jsondecode(file("${path.module}/${policy_name}"))["properties"]["policyRule"], false) != false
   }
-  name                = try(each.value.definition_name, jsondecode(file("${path.module}/${each.key}"))["name"])
-  display_name        = try(each.value.definition_display_name, jsondecode(file("${path.module}/${each.key}"))["properties"]["displayName"])
-  description         = try(each.value.definition_description, jsondecode(file("${path.module}/${each.key}"))["properties"]["description"])
-  policy_type         = try(jsondecode(file("${path.module}/${each.key}"))["properties"]["policyType"], "Custom")
-  mode                = try(jsondecode(file("${path.module}/${each.key}"))["properties"]["mode"], "All")
-  //parameters          = jsondecode(file("${path.module}/${each.key}"))["properties"]["parameters"]
+  name         = try(each.value.definition_name, jsondecode(file("${path.module}/${each.key}"))["name"])
+  display_name = try(each.value.definition_display_name, jsondecode(file("${path.module}/${each.key}"))["properties"]["displayName"])
+  description  = try(each.value.definition_description, jsondecode(file("${path.module}/${each.key}"))["properties"]["description"])
+  policy_type  = try(jsondecode(file("${path.module}/${each.key}"))["properties"]["policyType"], "Custom")
+  mode         = try(jsondecode(file("${path.module}/${each.key}"))["properties"]["mode"], "All")
   parameters          = jsonencode(jsondecode(file("${path.module}/${each.key}"))["properties"]["parameters"])
   policy_rule         = jsonencode(jsondecode(file("${path.module}/${each.key}"))["properties"]["policyRule"])
   management_group_id = data.azurerm_management_group.filebased_mangement_group[each.key].id
@@ -107,9 +106,9 @@ resource "azurerm_policy_definition" "filebased" {
 
 // Policies without policy_rule defined
 resource "azurerm_policy_definition" "filebased_empty_policy_rule" {
-  for_each            = { 
-    for policy_name, policy_data in local.filebased_mgmt_grp_policies : policy_name => policy_data 
-    if try(jsondecode(file("${path.module}/${policy_name}"))["properties"]["policyRule"], false) == false 
+  for_each = {
+    for policy_name, policy_data in local.filebased_mgmt_grp_policies : policy_name => policy_data
+    if try(jsondecode(file("${path.module}/${policy_name}"))["properties"]["policyRule"], false) == false
   }
   name                = try(each.value.definition_name, jsondecode(file("${path.module}/${each.key}"))["name"])
   display_name        = try(each.value.definition_display_name, jsondecode(file("${path.module}/${each.key}"))["properties"]["displayName"])
