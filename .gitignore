@@ -9,3 +9,4 @@ testenvironment.tf
 id_rsa.pub
 project.yml
 settings.yml
+terraform.tfstate*
