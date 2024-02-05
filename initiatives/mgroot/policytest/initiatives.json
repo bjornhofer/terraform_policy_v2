@@ -5,7 +5,6 @@
     },
     {
         "assignment_name" : "exisiting_initiative",
-        "initiative_definition_id" : "/providers/Microsoft.Authorization/policySetDefinitions/0a2ebd47-3fb9-4735-a006-b7f31ddadd9f",
-        "parameters" :  { "costCenterValue" : {"value" : "costcenter01"}, "productNameValue" : {"value" : "product01"} }
+        "initiative_definition_id" : "/providers/Microsoft.Authorization/policySetDefinitions/0a2ebd47-3fb9-4735-a006-b7f31ddadd9f"
     }
 ]
