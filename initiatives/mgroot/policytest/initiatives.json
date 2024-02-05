@@ -1,10 +1,12 @@
 [
     {
         "assignment_name" : "no_rule",
-        "initiative_filename" : "file_based_no_parameter.json"
+        "initiative_filename" : "file_based_no_parameter.json",
+        "parameters" :  {"effect" : "Audit"}
     },
     {
         "assignment_name" : "exisiting_initiative",
         "initiative_definition_id" : "/providers/Microsoft.Authorization/policySetDefinitions/0a2ebd47-3fb9-4735-a006-b7f31ddadd9f",
-        "parameters" :  {}}
+        "parameters" :  {}
+    }
 ]
