@@ -2,7 +2,7 @@
     {
         "assignment_name" : "no_rule",
         "initiative_filename" : "file_based_no_parameter.json",
-        "parameters" :  {"effect" : "Audit"}
+        "parameters" :  { "effect" : { "value": "Audit" }}
     },
     {
         "assignment_name" : "exisiting_initiative",
