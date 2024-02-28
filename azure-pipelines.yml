@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  name: pool02
+  name: pool01_01
 
 stages:
   - stage: Terraform
